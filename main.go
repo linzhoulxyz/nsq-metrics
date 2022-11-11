@@ -6,23 +6,51 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 
-	"github.com/lovoo/nsq_exporter/collector"
+	"github.com/leonkunert/nsq-metrics/collector"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-// Version of nsq_exporter. Set at build time.
-const Version = "0.0.0.dev"
+const (
+	// Version of nsq_exporter. Set at build time.
+	Version = "0.0.0.dev"
+
+	prefix = "NSQ_METRICS"
+
+	// Env Vars
+	listenAddressEnv     = prefix + "_WEB_LISTEN_ADDRESS"
+	metricsPathEnv       = prefix + "_WEB_PATH"
+	nsqdURLEnv           = prefix + "_NSQD_ADDRESS"
+	enabledCollectorsEnv = prefix + "_ENABLED_COLLECTORS"
+	namespaceEnv         = prefix + "_NAMESPACE"
+	tlsCACertEnv         = prefix + "_TLS_CA_CERT"
+	tlsCertEnv           = prefix + "_TLS_CERT"
+	tlsKeyEnv            = prefix + "_TLS_KEY"
+
+	// Default values for flags and env
+	defaultListenAddress     = ":9117"
+	defaultMetricsPath       = "/metrics"
+	defaultNsqdURL           = "http://localhost:4151/stats"
+	defaultEnabledCollectors = "stats.topics,stats.channels"
+	defaultNamespace         = "nsq"
+)
 
 var (
-	listenAddress     = flag.String("web.listen", ":9117", "Address on which to expose metrics and web interface.")
-	metricsPath       = flag.String("web.path", "/metrics", "Path under which to expose metrics.")
-	nsqdURL           = flag.String("nsqd.addr", "http://localhost:4151/stats", "Address of the nsqd node.")
-	enabledCollectors = flag.String("collect", "stats.topics,stats.channels", "Comma-separated list of collectors to use.")
-	namespace         = flag.String("namespace", "nsq", "Namespace for the NSQ metrics.")
+	envListenAddress     = envString(listenAddressEnv, defaultListenAddress)
+	envMetricsPath       = envString(metricsPathEnv, defaultMetricsPath)
+	envNsqdURL           = envString(nsqdURLEnv, defaultNsqdURL)
+	envEnabledCollectors = envString(enabledCollectorsEnv, defaultEnabledCollectors)
+	envNamespace         = envString(namespaceEnv, defaultNamespace)
+
+	listenAddress     = flag.String("web.listen", envListenAddress, "Address on which to expose metrics and web interface.")
+	metricsPath       = flag.String("web.path", envMetricsPath, "Path under which to expose metrics.")
+	nsqdURL           = flag.String("nsqd.address", envNsqdURL, "Address of the nsqd node.")
+	enabledCollectors = flag.String("collect", envEnabledCollectors, "Comma-separated list of collectors to use.")
+	namespace         = flag.String("namespace", envNamespace, "Namespace for the NSQ metrics.")
 	tlsCACert         = flag.String("tls.ca_cert", "", "CA certificate file to be used for nsqd connections.")
 	tlsCert           = flag.String("tls.cert", "", "TLS certificate file to be used for client connections to nsqd.")
 	tlsKey            = flag.String("tls.key", "", "TLS key file to be used for TLS client connections to nsqd.")
@@ -91,6 +119,13 @@ func createNsqExecutor() (*collector.NsqExecutor, error) {
 		ex.Use(c(*namespace))
 	}
 	return ex, nil
+}
+
+func envString(name string, def string) string {
+	if v := os.Getenv(name); v != "" {
+		return v
+	}
+	return def
 }
 
 func normalizeURL(ustr string) (string, error) {

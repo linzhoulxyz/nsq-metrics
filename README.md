@@ -1,12 +1,8 @@
-# NSQ Exporter
+# NSQ Metrics
 
-[![GoDoc](https://godoc.org/github.com/lovoo/nsq_exporter?status.svg)](https://godoc.org/github.com/lovoo/nsq_exporter) [![Build Status](https://travis-ci.org/lovoo/nsq_exporter.svg?branch=master)](https://travis-ci.org/lovoo/nsq_exporter) [![](https://images.microbadger.com/badges/image/lovoo/nsq_exporter.svg)](https://microbadger.com/images/lovoo/nsq_exporter "Get your own image badge on microbadger.com")
+[![GoDoc](https://pkg.go.dev/github.com/leonkunert/nsq-metrics?status.svg)](https://pkg.go.dev/github.com/leonkunert/nsq-metrics)
 
-NSQ exporter for prometheus.io, written in go.
-
-## Usage
-
-    docker run -d --name nsq_exporter -l nsqd:nsqd -p 9117:9117 lovoo/nsq_exporter:latest -nsq.addr=http://nsqd:4151 -collectors=nsqstats
+NSQ metrics exporter for prometheus.io, written in go.
 
 ## Building
 
@@ -14,13 +10,17 @@ NSQ exporter for prometheus.io, written in go.
 
     OR
 
-    go get -u github.com/lovoo/nsq_exporter
-    go install github.com/lovoo/nsq_exporter
+    go install github.com/leonkunert/nsq-metrics@latest
 
-## Contributing
+## Config
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request
+env | flag | description | default
+--- | --- | --- | ---
+NSQ_METRICS_WEB_LISTEN_ADDRESS | web.listen | Address on which to expose metrics and web interface. | :9117
+NSQ_METRICS_WEB_PATH | web.path | Path under which to expose metrics. | /metrics
+NSQ_METRICS_NSQD_ADDRESS | nsqd.address | Address of the nsqd node. | http://localhost:4151/stats
+NSQ_METRICS_ENABLED_COLLECTORS | collectors | Comma-separated list of collectors to use. | stats.topics,stats.channels
+NSQ_METRICS_NAMESPACE | namespace | Namespace for the NSQ metrics. | nsq
+NSQ_METRICS_TLS_CA_CERT | tls.ca-cert | CA certificate file to be used for nsqd connections. | ""
+NSQ_METRICS_TLS_CERT | tls.cert | TLS certificate file to be used for client connections to nsqd. | ""
+NSQ_METRICS_TLS_KEY | tls.key | TLS key file to be used for TLS client connections to nsqd. | ""

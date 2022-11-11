@@ -1,4 +1,4 @@
-module github.com/lovoo/nsq_exporter
+module github.com/leonkunert/nsq-metrics
 
 go 1.19
 
