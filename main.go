@@ -56,9 +56,10 @@ var (
 	tlsKey            = flag.String("tls.key", "", "TLS key file to be used for TLS client connections to nsqd.")
 
 	statsRegistry = map[string]func(namespace string) collector.StatsCollector{
-		"topics":   collector.TopicStats,
-		"channels": collector.ChannelStats,
-		"clients":  collector.ClientStats,
+		"topics":    collector.TopicStats,
+		"channels":  collector.ChannelStats,
+		"clients":   collector.ClientStats,
+		"producers": collector.ProducerStats,
 	}
 )
 

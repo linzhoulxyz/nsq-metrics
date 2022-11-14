@@ -3,8 +3,8 @@ package collector
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"io/ioutil"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 
@@ -45,7 +45,7 @@ func NewNsqExecutor(namespace, nsqdURL, tlsCACert, tlsCert, tlsKey string) (*Nsq
 		}
 		caCertPool := x509.NewCertPool()
 		if tlsCACert != "" {
-			caCert, err := ioutil.ReadFile(tlsCACert)
+			caCert, err := os.ReadFile(tlsCACert)
 			if err != nil {
 				return nil, err
 			}
@@ -55,7 +55,6 @@ func NewNsqExecutor(namespace, nsqdURL, tlsCACert, tlsCert, tlsKey string) (*Nsq
 			Certificates: []tls.Certificate{cert},
 			RootCAs:      caCertPool,
 		}
-		tlsConfig.BuildNameToCertificate()
 		transport.TLSClientConfig = tlsConfig
 	}
 	return &NsqExecutor{
