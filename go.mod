@@ -1,4 +1,4 @@
-module github.com/leonkunert/nsq-metrics
+module github.com/spiegeltechlab/nsq-metrics
 
 go 1.19
 

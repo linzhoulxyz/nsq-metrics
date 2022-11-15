@@ -1,6 +1,6 @@
 # NSQ Metrics
 
-[![GoDoc](https://pkg.go.dev/badge/github.com/leonkunert/nsq-metrics.svg)](https://pkg.go.dev/github.com/leonkunert/nsq-metrics)
+[![GoDoc](https://pkg.go.dev/badge/github.com/spiegeltechlab/nsq-metrics.svg)](https://pkg.go.dev/github.com/spiegeltechlab/nsq-metrics)
 
 NSQ metrics exporter for prometheus.io, written in go.
 
@@ -10,7 +10,7 @@ NSQ metrics exporter for prometheus.io, written in go.
 
     OR
 
-    go install github.com/leonkunert/nsq-metrics@latest
+    go install github.com/spiegeltechlab/nsq-metrics@latest
 
 ## Config
 

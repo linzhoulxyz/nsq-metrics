@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/leonkunert/nsq-metrics/collector"
+	"github.com/spiegeltechlab/nsq-metrics/collector"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"

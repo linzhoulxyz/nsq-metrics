@@ -19,4 +19,4 @@ test:
 .PHONY: release-build
 release-build:
 	@go install github.com/mitchellh/gox@latest
-	@$(GOX) $(GOX_ARGS) github.com/leonkunert/nsq-metrics
+	@$(GOX) $(GOX_ARGS) github.com/spiegeltechlab/nsq-metrics
