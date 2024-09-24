@@ -1,0 +1,946 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 1,
+    "id": 28,
+    "links": [
+      {
+        "asDropdown": false,
+        "icon": "external link",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [
+          "nsq-integration"
+        ],
+        "targetBlank": false,
+        "title": "Other NSQ dashboards",
+        "type": "dashboards",
+        "url": ""
+      }
+    ],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "panels": [],
+        "title": "Topics",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "links": [
+              {
+                "title": "Show split by nsqd instances for ${__field.labels.topic}",
+                "url": "d/nsq-instances?var-topic=${__field.labels.topic}&${datasource:queryparam}&${job:queryparam}&$${__url_time_range}"
+              }
+            ],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ns"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "id": 3,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.0-75826",
+        "targets": [
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "editorMode": "code",
+            "expr": "avg without (instance) (nsq_topic_e2e_latency_99_percentile{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\"})",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}} p99",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Topic end-to-end processing time",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "uid": "$datasource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": ".+ rps"
+              },
+              "properties": [
+                {
+                  "id": "links",
+                  "value": [
+                    {
+                      "title": "Show split by nsqd instances for ${__field.labels.topic} ",
+                      "url": "d/nsq-instances?var-topic=${__field.labels.topic}&${datasource:queryparam}&${job:queryparam}&$${__url_time_range}"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": ".+ Bps rate"
+              },
+              "properties": [
+                {
+                  "id": "custom.drawStyle",
+                  "value": "bars"
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "custom.stacking",
+                  "value": {
+                    "group": "A",
+                    "mode": "normal"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#cef7913b",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "unit",
+                  "value": "Bps"
+                },
+                {
+                  "id": "custom.barAlignment",
+                  "value": -1
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 10
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 7
+        },
+        "id": 4,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.0-75826",
+        "targets": [
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "expr": "avg by (topic) (rate(nsq_topic_message_count{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\"}[$__rate_interval]))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}} rps",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "expr": "sum by () (rate(nsq_topic_message_bytes{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\"}[$__rate_interval]))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "selected topics Bps rate",
+            "refId": "B"
+          }
+        ],
+        "title": "Topic messages",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "uid": "$datasource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "links": [
+              {
+                "title": "Show split by nsqd instances for ${__field.labels.topic}",
+                "url": "d/nsq-instances?var-topic=${__field.labels.topic}&${datasource:queryparam}&${job:queryparam}&$${__url_time_range}"
+              }
+            ],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 7
+        },
+        "id": 5,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "11.3.0-75826",
+        "targets": [
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "expr": "sum without (instance) (nsq_topic_depth{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\"})",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}} depth",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "expr": "sum without (instance) (nsq_topic_backend_depth{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\"})",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}} memory+disk depth",
+            "refId": "B"
+          }
+        ],
+        "title": "Topic depth",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 15
+        },
+        "id": 6,
+        "panels": [],
+        "title": "Channels",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "links": [
+              {
+                "title": "Show split by nsqd instances for ${__field.labels.topic}/${__field.labels.channel}",
+                "url": "d/nsq-instances?var-topic=${__field.labels.topic}&var-channel=${__field.labels.channel}&${datasource:queryparam}&${job:queryparam}&${__url_time_range}"
+              }
+            ],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ns"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 16
+        },
+        "id": 7,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.0-75826",
+        "targets": [
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "editorMode": "code",
+            "expr": "avg without (instance) (nsq_channel_e2e_latency_99p{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\",channel=~\"$channel\"})",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}}/{{channel}} p99",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Channel end-to-end processing time",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "links": [
+              {
+                "title": "Show split by nsqd instances for ${__field.labels.topic}/${__field.labels.channel}",
+                "url": "d/nsq-instances?var-topic=${__field.labels.topic}&var-channel=${__field.labels.channel}&${datasource:queryparam}&${job:queryparam}&${__url_time_range}"
+              }
+            ],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 22
+        },
+        "id": 8,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.0-75826",
+        "targets": [
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "editorMode": "code",
+            "expr": "sum without (instance) (nsq_channel_client_count{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\",channel=~\"$channel\"})",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}}/{{channel}}",
+            "range": true,
+            "refId": "A"
+          }
+        ],
+        "title": "Channel clients",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "smooth",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "links": [
+              {
+                "title": "Show split by nsqd instances for ${__field.labels.topic}/${__field.labels.channel}",
+                "url": "d/nsq-instances?var-topic=${__field.labels.topic}&var-channel=${__field.labels.channel}&${datasource:queryparam}&${job:queryparam}&${__url_time_range}"
+              }
+            ],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 22
+        },
+        "id": 9,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.3.0-75826",
+        "targets": [
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "editorMode": "code",
+            "expr": "sum without (instance) (nsq_channel_depth{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\",channel=~\"$channel\"})",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}}/{{channel}} depth",
+            "range": true,
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "editorMode": "code",
+            "expr": "sum without (instance) (nsq_channel_backend_depth{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\",channel=~\"$channel\"})",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}}/{{channel}} memory+disk depth",
+            "range": true,
+            "refId": "B"
+          },
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "editorMode": "code",
+            "expr": "sum without (instance) (nsq_channel_in_flight_count{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\",channel=~\"$channel\"})",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}}/{{channel}} in-flight",
+            "range": true,
+            "refId": "C"
+          },
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "editorMode": "code",
+            "expr": "avg without (instance) (rate(nsq_channel_requeue_count{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\",channel=~\"$channel\"}[$__rate_interval]))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}}/{{channel}} requeue",
+            "range": true,
+            "refId": "D"
+          },
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "editorMode": "code",
+            "expr": "avg without (instance) (rate(nsq_channel_timeout_count{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\",channel=~\"$channel\"}[$__rate_interval]))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}}/{{channel}} timeout",
+            "range": true,
+            "refId": "E"
+          },
+          {
+            "datasource": {
+              "uid": "$datasource"
+            },
+            "editorMode": "code",
+            "expr": "sum without (instance) (nsq_channel_deferred_count{job=~\"$job\", instance=~\"$instance\",topic=~\"$topic\",channel=~\"$channel\"})",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "{{topic}}/{{channel}} deferred",
+            "range": true,
+            "refId": "F"
+          }
+        ],
+        "title": "Channel stats",
+        "type": "timeseries"
+      }
+    ],
+    "refresh": "30s",
+    "schemaVersion": 37,
+    "style": "dark",
+    "tags": [
+      "nsq-integration"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Prometheus",
+            "value": "Prometheus"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Data Source",
+          "multi": false,
+          "name": "datasource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "(?!grafanacloud-usage|grafanacloud-ml-metrics).+",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": ".+",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": true,
+          "label": "job",
+          "multi": true,
+          "name": "job",
+          "options": [],
+          "query": {
+            "query": "label_values(nsq_topic_message_count, job)",
+            "refId": "Prometheus-job-Variable-Query"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "allValue": ".+",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": true,
+          "label": "instance",
+          "multi": true,
+          "name": "instance",
+          "options": [],
+          "query": {
+            "query": "label_values(nsq_topic_message_count{job=~\"$job\"},instance)",
+            "refId": "Prometheus-instance-Variable-Query"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": true,
+          "multi": true,
+          "name": "topic",
+          "options": [],
+          "query": {
+            "query": "label_values(nsq_topic_message_count{job=~\"$job\",instance=~\"$instance\"},topic)",
+            "refId": "Prometheus-topic-Variable-Query"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "definition": "label_values(nsq_channel_message_count{job=~\"$job\",instance=~\"$instance\",topic=~\"$topic\"},channel)",
+          "hide": 0,
+          "includeAll": true,
+          "multi": true,
+          "name": "channel",
+          "options": [],
+          "query": {
+            "query": "label_values(nsq_channel_message_count{job=~\"$job\",instance=~\"$instance\",topic=~\"$topic\"},channel)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "default",
+    "title": "NSQ Topics",
+    "uid": "nsq-topics",
+    "version": 3,
+    "weekStart": ""
+  }
